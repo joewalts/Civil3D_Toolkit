@@ -27,28 +27,38 @@ using System.Text;
 using System.Threading.Tasks;
 using BHG = BH.oM.Geometry;
 using BHC = BH.oM.Civils.Elements;
-using ADC = Autodesk.Civil.DatabaseServices;
+
+
+using Autodesk.AutoCAD.Runtime;
+using Autodesk.AutoCAD.ApplicationServices;
+using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Geometry;
 
 using Autodesk.Civil.ApplicationServices;
+using Autodesk.Civil.Runtime;
+using ADC = Autodesk.Civil.DatabaseServices;
+using BH.UI.Civil.Engine;
+using BH.oM.Adapters.Civil3D;
+
+using Autodesk.AutoCAD.EditorInput;
+
 namespace BH.UI.Civil.Engine
 {
-    public static partial class Convert
+    public static partial class Create
     {
 
         /***************************************************/
         /**** Public Methods                            ****/
         /***************************************************/
 
-        public static BHC.Pipe ToBHoM(this ADC.Pipe acPipe)
+        public static bool InCivil3D(this BHC.Pipe bhPipe, Civil3DRuntimeContext context)
         {
-            return new BHC.Pipe
-            {
-                CentreLine = new BHG.Line { Start = acPipe.StartPoint.FromCivil3D(), End = acPipe.EndPoint.FromCivil3D() },
-                Diameter = acPipe.InnerDiameterOrWidth,
-                Thickness = acPipe.WallThickness,
-                FlowDirection = acPipe.FlowDirectionMethod.ToBHoM(),
-            };
+            CivilDocument civDoc = context.CivilDocument;
+            Transaction acTrans = context.Transaction;
+            BlockTableRecord acBlkTblRec = context.BlockTableRecord;
 
+        
+            throw new NotImplementedException();
         }
 
         /***************************************************/

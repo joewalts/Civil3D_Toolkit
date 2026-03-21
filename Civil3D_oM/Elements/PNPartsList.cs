@@ -25,31 +25,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BHG = BH.oM.Geometry;
-using BHC = BH.oM.Civils.Elements;
-using ADC = Autodesk.Civil.DatabaseServices;
+using BH.oM.Base;
+using BH.oM.Geometry;
 
-using Autodesk.Civil.ApplicationServices;
-namespace BH.UI.Civil.Engine
+namespace BH.oM.Civils.Elements
 {
-    public static partial class Convert
+    public class PNPartsList : BHoMObject
     {
-
         /***************************************************/
-        /**** Public Methods                            ****/
+        /**** Public Properties                         ****/
         /***************************************************/
-
-        public static BHC.Pipe ToBHoM(this ADC.Pipe acPipe)
-        {
-            return new BHC.Pipe
-            {
-                CentreLine = new BHG.Line { Start = acPipe.StartPoint.FromCivil3D(), End = acPipe.EndPoint.FromCivil3D() },
-                Diameter = acPipe.InnerDiameterOrWidth,
-                Thickness = acPipe.WallThickness,
-                FlowDirection = acPipe.FlowDirectionMethod.ToBHoM(),
-            };
-
-        }
+        public virtual string PNPartsListName { get; set; } = null;
 
         /***************************************************/
     }

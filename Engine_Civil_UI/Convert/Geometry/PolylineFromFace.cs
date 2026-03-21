@@ -26,33 +26,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BHG = BH.oM.Geometry;
-using BHC = BH.oM.Civils.Elements;
-using ADC = Autodesk.Civil.DatabaseServices;
 
-using Autodesk.Civil.ApplicationServices;
+using ACG = Autodesk.AutoCAD.Geometry;
+
 namespace BH.UI.Civil.Engine
 {
     public static partial class Convert
     {
 
         /***************************************************/
-        /**** Public Methods                            ****/
+        /*** Convert a Mesh Face to a Polyline           ***/
         /***************************************************/
 
-        public static BHC.Pipe ToBHoM(this ADC.Pipe acPipe)
+        public static BHG.Polyline PolylineFromFace(this BHG.Face face, List<BHG.Point> vertices)
         {
-            return new BHC.Pipe
-            {
-                CentreLine = new BHG.Line { Start = acPipe.StartPoint.FromCivil3D(), End = acPipe.EndPoint.FromCivil3D() },
-                Diameter = acPipe.InnerDiameterOrWidth,
-                Thickness = acPipe.WallThickness,
-                FlowDirection = acPipe.FlowDirectionMethod.ToBHoM(),
-            };
+            if (face == null || vertices == null)
+                return new BHG.Polyline();
 
+            List<BHG.Point> pts = new List<BHG.Point>();
+
+            pts.Add(vertices[face.A]);
+            pts.Add(vertices[face.B]);
+            pts.Add(vertices[face.C]);
+
+            if (face.D >= 0)
+                pts.Add(vertices[face.D]);
+
+            return new BHG.Polyline { ControlPoints = pts };
         }
 
         /***************************************************/
     }
 }
-
 
