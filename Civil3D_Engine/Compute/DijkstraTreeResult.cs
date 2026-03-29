@@ -22,44 +22,31 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BHC = BH.oM.Civils.Elements;
-using BH.oM.Geometry;
+using BH.oM.Analytical.Graph;
 
-using ACG = Autodesk.AutoCAD.Geometry;
 
-using ADC = Autodesk.Civil.DatabaseServices;
-
-using Autodesk.AutoCAD.DatabaseServices;
-
-namespace BH.UI.Civil.Engine
+namespace BH.Engine.Adapters.Civil3D
 {
-    public static partial class Convert
+    // Lightweight result object (engine-side DTO).
+    // If you want this in oM later, move it to BH.oM.Analytical.* and make it a BHoMObject.
+    public class DijkstraTreeResult
     {
+        public Guid GraphId { get; internal set; }
+        public Guid Start { get; internal set; }
 
-        /***************************************************/
-        /**** Public Methods                            ****/
-        /***************************************************/
+        // Distances from Start (cost)
+        public Dictionary<Guid, double> Dist { get; internal set; }
 
-        public static BHC.Block FromCivil3D(this BlockReference civBlock)
-        {
-            return new BHC.Block
-            {
-                Position  = civBlock.Position.FromCivil3D(),
-                Rotation  = civBlock.Rotation,
-                Scale     = new Vector
-                {
-                    X = civBlock.ScaleFactors.X,
-                    Y = civBlock.ScaleFactors.Y,
-                    Z = civBlock.ScaleFactors.Z
-                },
-            };
-        }
+        // Predecessor pointers: Prev[v] = u
+        public Dictionary<Guid, Guid> Prev { get; internal set; }
 
-        /***************************************************/
+        // The relation used to reach v from Prev[v]
+        public Dictionary<Guid, IRelation> PrevRelation { get; internal set; }
+
+        // Visited nodes (for debugging / diagnostics)
+        public HashSet<Guid> Visited { get; internal set; }
+
+        // Adjacency cached for this run (optional, but handy if you want to reuse it)
+        internal Dictionary<Guid, List<IRelation>> Adjacency { get; set; }
     }
 }
-
-

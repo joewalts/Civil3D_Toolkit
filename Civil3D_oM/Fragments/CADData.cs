@@ -25,35 +25,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autodesk.AutoCAD.DatabaseServices;
+
 using BH.oM.Base;
-using BH.oM.Geometry;
 
-namespace BH.oM.Civils.Elements
+namespace BH.oM.Civils.Fragments
 {
-    public class Block : BHoMObject
-    {
-        /***************************************************/
-        /**** Public Properties                         ****/
-        /***************************************************/
-
-        public virtual string BlockName { get; set; } = "";
-        //public virtual BoundingBox Bounds { get; set; } = new BoundingBox();
-        //public virtual bool CanCastShadow { get; set; } = false;
-        //public virtual CollisionType CollisionType { get; set; } = CollisionType.Undefined;
-        //public virtual bool IsPersistent { get; set; } = false;
-        //public virtual bool IsPlanar { get; set; } = false;
-        //public virtual string Layer { get; set; } = "";
-        //public virtual string Material { get; set; } = "";
-        //public virtual Vector Normal { get; set; } = new Vector();
-        public virtual Point Position { get; set; } = new Point();
-        public virtual double Rotation { get; set; } = 0;  /// Rotation in radians about World Z (planar assumption)
-        public virtual Vector Scale { get; set; } = new Vector { X = 1, Y = 1, Z = 1 };
-        public virtual Vector Normal { get; set; } = new Vector { Z = 1 };
-        //public virtual bool IsVisible { get; set; } = false;
-        //public virtual bool CanReceiveShadow { get; set; } = false;
-
-        /***************************************************/
+    public class CADLayerFragment : IFragment
+    {       
+        public string CADLayerName { get; set; }
     }
-}
 
+    // public class HandleFragment : IFragment
+    // {       
+    //     public string Handle { get; set; }
+    // }
+
+    // public class CadTextFragment : IFragment
+    // {
+    //     public double TextHeight { get; set; }
+    //     public double Width { get; set; }
+    //     public string TextStyle { get; set; }
+    //     public AttachmentPoint Attachment { get; set; }  // This is the AutoCAD enum for text attachment, which is a combination of horizontal and vertical alignment. It may need to be converted to BHoM's own alignment system if necessary.
+    //     public bool Annotative { get; set; }
+    // }
+
+}
 

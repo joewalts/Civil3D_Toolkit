@@ -25,14 +25,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BHC = BH.oM.Civils.Elements;
-using BH.oM.Geometry;
-
+using BHG = BH.oM.Geometry;
+using ACD = Autodesk.AutoCAD.DatabaseServices;
 using ACG = Autodesk.AutoCAD.Geometry;
+using BHCE = BH.oM.Civils.Elements;
 
-using ADC = Autodesk.Civil.DatabaseServices;
-
-using Autodesk.AutoCAD.DatabaseServices;
+using BH.Engine.Base;
+using BHB = BH.oM.Base;
 
 namespace BH.UI.Civil.Engine
 {
@@ -42,23 +41,58 @@ namespace BH.UI.Civil.Engine
         /***************************************************/
         /**** Public Methods                            ****/
         /***************************************************/
+        ///////////////////
+        // To Civils 3d //
+        /////////////////
+        /***************   ********************/
+        
 
-        public static BHC.Block FromCivil3D(this BlockReference civBlock)
+
+
+
+        /////////////////////
+        // From Civils 3d //
+        ///////////////////   
+        /// 
+        /// 
+
+        public static BHCE.CadTextNote FromCivil3d(this ACD.MText mtext)
         {
-            return new BHC.Block
+            if (mtext == null)
+                return null;
+
+
+            BHCE.CadTextNote note = new BHCE.CadTextNote
             {
-                Position  = civBlock.Position.FromCivil3D(),
-                Rotation  = civBlock.Rotation,
-                Scale     = new Vector
+                Text = mtext.Text,
+                Position = new BHG.Point
                 {
-                    X = civBlock.ScaleFactors.X,
-                    Y = civBlock.ScaleFactors.Y,
-                    Z = civBlock.ScaleFactors.Z
+                    X = mtext.Location.X,
+                    Y = mtext.Location.Y,
+                    Z = mtext.Location.Z
                 },
+                Rotation = mtext.Rotation
             };
+
+            // Attach CAD metadata as fragments
+            // note.Fragments.Add(mtext.ToCadTextFragment());
+
+            return note;
         }
 
-        /***************************************************/
+
+        // internal static BH.oM.Civils.Fragments.CadTextFragment ToCadTextFragment(this ACD.MText mtext)
+        // {
+        //     return new BH.oM.Civils.Fragments.CadTextFragment
+        //     {
+        //         TextHeight = mtext.TextHeight,
+        //         Width = mtext.Width,
+        //         TextStyle = mtext.TextStyleName,
+        //         Attachment = mtext.Attachment,
+        //         Annotative = mtext.Annotative == ACD.AnnotativeStates.True,
+        //     };
+        // }
+
     }
 }
 
