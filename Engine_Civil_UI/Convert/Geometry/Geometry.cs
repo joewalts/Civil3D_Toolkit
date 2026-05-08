@@ -25,12 +25,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BHC = BH.oM.Civils.Elements;
 using BHG = BH.oM.Geometry;
-
+using ACD = Autodesk.AutoCAD.DatabaseServices;
 using ACG = Autodesk.AutoCAD.Geometry;
-
-using ADC = Autodesk.Civil.DatabaseServices;
 
 namespace BH.UI.Civil.Engine
 {
@@ -40,31 +37,60 @@ namespace BH.UI.Civil.Engine
         /***************************************************/
         /**** Public Methods                            ****/
         /***************************************************/
+        ///////////////////
+        // To Civils 3d //
+        /////////////////
+        /*************** Line  ********************/
 
-        public static BHC.CoGoPoint FromCivil3D(this ADC.CogoPoint cogoPoint)
+
+
+        /////////////////////
+        // From Civils 3d //
+        ///////////////////        
+
+        public static BHG.IGeometry FromCivil3D(this ACD.Entity ent)
         {
-            BHC.CoGoPoint pt = new BHC.CoGoPoint
-            {
-                Point = new BHG.Point { X = cogoPoint.Easting, Y = cogoPoint.Northing, Z = cogoPoint.Elevation },
-                PointName = cogoPoint.PointName,
-                PointNumber = cogoPoint.PointNumber,
-                FullDescription = cogoPoint.FullDescription,
-                RawDescription = cogoPoint.RawDescription
-            };
+            if (ent == null)
+                return null;
 
-            return pt;
+            // Point
+            var dbPoint = ent as ACD.DBPoint;
+            if (dbPoint != null)
+                return dbPoint.FromCivil3D();
+
+            // Line
+            var line = ent as ACD.Line;
+            if (line != null)
+                return line.FromCivil3D();
+
+            // Arc
+            var arc = ent as ACD.Arc;
+            if (arc != null)
+                return arc.FromCivil3D();
+
+            // Circle
+            var circle = ent as ACD.Circle;
+            if (circle != null)
+                return circle.FromCivil3D();
+
+            // Ellipse
+            var ellipse = ent as ACD.Ellipse;
+            if (ellipse != null)
+                return ellipse.FromCivil3D();
+
+            // Polyline (2D)
+            var pl = ent as ACD.Polyline;
+            if (pl != null)
+                return pl.FromCivil3D();
+
+            // // Polyline3d
+            // var pl3d = ent as ACD.Polyline3d;
+            // if (pl3d != null)
+            //     return pl3d.FromCivil3D();
+
+            // Add more entity types here as needed
+
+            return null;
         }
-
-        public static void ToCivil3D(this BHC.CoGoPoint bhPoint, ADC.CogoPoint c3dPoint)
-        {
-            c3dPoint.Easting = bhPoint.Point.X;
-            c3dPoint.Northing = bhPoint.Point.Y;
-            c3dPoint.Elevation = bhPoint.Point.Z;
-            c3dPoint.PointName = bhPoint.PointName;
-        }
-
-        /***************************************************/
     }
 }
-
-

@@ -25,20 +25,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Autodesk.Aec.Modeler;
 using BH.oM.Base;
 using BH.oM.Geometry;
 
-
 namespace BH.oM.Civils.Elements
 {
-    /***************************************************/
-    /**** Public Properties                         ****/
-    /***************************************************/
-    public class FeatureLine : BHoMObject
+    public class RainbowOffsetCurves : BHoMObject
     {
-        public virtual string Description { get; set; } = "";
-        public virtual ICurve Curve { get; set; } = null;
+        /***************************************************/
+        /**** Public Properties                         ****/
+        /***************************************************/
+
         /***************************************************/
     }
 }

@@ -25,22 +25,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Autodesk.Aec.Modeler;
+using Autodesk.AutoCAD.DatabaseServices;
+
 using BH.oM.Base;
-using BH.oM.Geometry;
 
-
-namespace BH.oM.Civils.Elements
+namespace BH.oM.Civils.Fragments
 {
-    /***************************************************/
-    /**** Public Properties                         ****/
-    /***************************************************/
-    public class FeatureLine : BHoMObject
-    {
-        public virtual string Description { get; set; } = "";
-        public virtual ICurve Curve { get; set; } = null;
-        /***************************************************/
-    }
-}
 
+    public class PipeConnectivityFragment : IFragment
+    {
+        public string UpstreamStructureName { get; set; }
+        public string DownstreamStructureName { get; set; }
+    }
+
+    public class SystemDataFragment : IFragment
+    {       
+        public string SystemName { get; set; }
+
+    }
+
+}
 

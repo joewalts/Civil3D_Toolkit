@@ -25,20 +25,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Autodesk.Aec.Modeler;
-using BH.oM.Base;
-using BH.oM.Geometry;
+using BHG = BH.oM.Geometry;
+using BHC = BH.oM.Civils.Elements;
+using ADC = Autodesk.Civil.DatabaseServices;
 
-
-namespace BH.oM.Civils.Elements
+namespace BH.UI.Civil.Engine
 {
-    /***************************************************/
-    /**** Public Properties                         ****/
-    /***************************************************/
-    public class FeatureLine : BHoMObject
+    public static partial class Convert
     {
-        public virtual string Description { get; set; } = "";
-        public virtual ICurve Curve { get; set; } = null;
+
+        /***************************************************/
+        /**** Public Methods                            ****/
+        /***************************************************/
+
+        public static BHC.PressureNetworkAppurtenance ToBHoM(this ADC.PressureAppurtenance acPresAppurt)
+        {
+            return new BHC.PressureNetworkAppurtenance
+            {
+                
+                Name = acPresAppurt.Name,
+                CentrePoint = acPresAppurt.Position.FromCivil3D(),
+                AppurtenanceType = acPresAppurt.PartDescription
+            };
+        }
+        public static BHC.PressureNetworkFitting ToBHoM(this ADC.PressureFitting acPresFit)
+        {
+            return new BHC.PressureNetworkFitting
+            {
+                
+                Name = acPresFit.Name,
+                CentrePoint = acPresFit.Position.FromCivil3D(),
+                FittingType = acPresFit.PartDescription
+            };
+        }
         /***************************************************/
     }
 }
